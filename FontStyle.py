@@ -13,7 +13,7 @@ with open('font_rules.json', 'r', encoding='utf-8') as file:
 document = Document("C:\\Users\\danil\\Desktop\\Lectures\\DiplomWork\\ВКР, текст.docx")
 styles = document.styles
 
-def checking_main_text(*names: str) -> int:
+def checking_font_text(*names: str) -> int:
     """
     Функция для проверки шрифтов, которые студент использует в ВКР согласно правилам
     :param names: str
@@ -45,7 +45,7 @@ def checking_main_text(*names: str) -> int:
 
 
 
-checking_main_text("Основной_ПЗ", "Heading 1", "Heading 2", "Heading 3")
+checking_font_text("Основной_ПЗ", "Heading 1", "Heading 2", "Heading 3")
 for key in font_status.keys():
     print(key)
     for parameter, value in font_status[key].items():
