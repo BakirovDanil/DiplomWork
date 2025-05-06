@@ -2,12 +2,12 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 from docx import Document
-from main import paragraphs, checking, dict_checking_code, sections_code, code_run_text
+from methods.main import paragraphs, checking, dict_checking_code, code_run_text
 
 app = FastAPI()
 
 @app.post("/check_document/")
-async def check_document(file: UploadFile = File(...)):
+def check_document(file: UploadFile = File(...)):
     try:
         document = Document(file.file)
         paragraphs(document)
