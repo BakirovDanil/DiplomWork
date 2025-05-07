@@ -10,41 +10,44 @@ def open_base_rules(file: str) -> dict:
         base_rules = data["base_rules"]
         return base_rules
 
+
 def checking_paragraphs_on_line_spacing(base_rules: dict, doc: Document) -> dict:
     """
-    Проверяет все абзацы, на соответствие заданным шрифтам. Также проверяет междустрочный интервал
-    :param base_rules:
-    :param doc:
-    :return:
+    Проверяет все абзацы на соответствие заданным шрифтам и междустрочному интервалу
     """
     number_paragraph = 1
     paragraph_status = {
         "Общее количество абзацев": len(doc.paragraphs),
         "Количество абзацев, соответствующих правилам": 0,
+        "Количество абзацев, которые содержат рисунки, формулы, объекты Visio": 0,
         "Количество абзацев с нарушениями": 0,
-        "Абзацы с нарушениями": {
-
-        }
+        "Абзацы с нарушениями": {}
     }
 
     def error_paragraph_adding(para):
         """
         Добавление информации об абзаце с нарушениями форматирования
-        :param para:
-        :return:
         """
         nonlocal number_paragraph
         paragraph_status["Количество абзацев с нарушениями"] += 1
         paragraph_status["Абзацы с нарушениями"][number_paragraph] = {
             "Номер абзаца": number_paragraph,
-            "Часть текста абзаца": para.text[0:int(len(para.text) / 2)]
+            "Часть текста абзаца": para.text
         }
-        number_paragraph += 1
 
     paragraphs = doc.paragraphs
     for paragraph in paragraphs:
+        # Проверяет, является ли абзац текстовым или же нет
+        if not paragraph._p.xpath(".//w:t/text()"):
+            paragraph_status["Количество абзацев, которые содержат рисунки, формулы, объекты Visio"] += 1
+            number_paragraph +=1
+            continue
         if paragraph.style.name in base_rules:
-            if paragraph.paragraph_format.line_spacing is None:
+            paragraph_format = paragraph.paragraph_format
+            if (paragraph_format.line_spacing is None and
+                    paragraph_format.first_line_indent is None and
+                    paragraph_format.space_after is None and
+                    paragraph_format.space_before is None):
                 paragraph_status["Количество абзацев, соответствующих правилам"] += 1
             else:
                 error_paragraph_adding(paragraph)
@@ -52,6 +55,7 @@ def checking_paragraphs_on_line_spacing(base_rules: dict, doc: Document) -> dict
             error_paragraph_adding(paragraph)
         number_paragraph += 1
     return paragraph_status
+
 
 def main(path: str):
     document = Document(path)
