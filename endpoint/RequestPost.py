@@ -1,15 +1,17 @@
-from fastapi import UploadFile, Form, File, HTTPException, APIRouter, Depends
+from fastapi import UploadFile, Form, File, HTTPException, APIRouter, Request
 from fastapi.responses import JSONResponse
 from docx import Document
 import json
+from fastapi.templating import Jinja2Templates
 
 from methods.CheckingCodes import search_chapter_codes, search_picture_codes
-from models.CharacterModels import Student, StudentBase, Department, DepartmentBase
+from models.CharacterModels import StudentBase, Student,Department, DepartmentBase
 from models.TaskModel import Task, TaskBase
 from typing import Annotated
 from database.ConnectionDB import SessionDep
 
 PostRouter = APIRouter()
+templates = Jinja2Templates(directory = "templates")
 
 def open_base_rules(file: str) -> dict:
     with open(file, 'r', encoding='utf-8') as file:
@@ -18,27 +20,46 @@ def open_base_rules(file: str) -> dict:
         return base_rules
 
 @PostRouter.post("/add_student")
-async def add_student(name: Annotated[str, Form()],
+async def add_student(number_gradebook: Annotated[str, Form(pattern = r"^\d{8}$")],
+                      name: Annotated[str, Form()],
                       age: Annotated[int, Form()],
                       department_id: Annotated[int, Form()],
-                      session: SessionDep):
+                      session: SessionDep,
+                      request: Request):
     try:
         department = session.get(Department, department_id)
+        check_number_gradebook = session.get(Student, number_gradebook)
         if not department:
             raise HTTPException(status_code = 404, detail = "Отдел с таким id не найден")
+        if check_number_gradebook:
+            raise HTTPException(status_code = 404, detail = "Студент с такой зачеткой есть в базе")
         student = StudentBase(
+            number_gradebook = number_gradebook,
             name = name,
             age = age,
             department_id = department_id
         )
-        session.add(Student.model_validate(student))
+        student = Student.model_validate(student)
+        session.add(student)
         session.commit()
         session.refresh(student)
-        return {"ok": "Запись добавлена"}
-    except HTTPException:
-        raise
+        return templates.TemplateResponse(
+            "add_student.html",
+            {
+                "request": request,
+                "success_message": "Студент был добавлен",
+                "student": student
+            }
+        )
     except Exception as e:
-        raise HTTPException(status_code = 500, detail = "Данные не добавлены")
+        return templates.TemplateResponse(
+            "add_student.html",
+            {
+                "request": request,
+                "error_message": f"Ошибка: {str(e)}"
+            },
+            status_code=500
+        )
 
 @PostRouter.post("/add_department")
 async def add_department(name: Annotated[str, Form()],
@@ -58,8 +79,7 @@ async def add_department(name: Annotated[str, Form()],
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
 @PostRouter.post("/check_document")
-async def check_document(student_surname: Annotated[str, Form()],
-                         student_name: Annotated[str, Form()],
+async def check_document(student_id: Annotated[int, Form()],
                          group: Annotated[str, Form()],
                          teacher_surname: Annotated[str, Form()],
                          teacher_name: Annotated[str, Form()],
@@ -67,11 +87,10 @@ async def check_document(student_surname: Annotated[str, Form()],
                          session: SessionDep):
     """
     Функция, которая возвращает результат проверки загруженного документа
+    :param student_id:
     :param session:
     :param teacher_name:
     :param teacher_surname:
-    :param student_name:
-    :param student_surname:
     :param group:
     :param file:
     :return:
@@ -86,8 +105,7 @@ async def check_document(student_surname: Annotated[str, Form()],
         }
         checking_result = str(result)
         diplom_work_information = TaskBase(
-            student_surname = student_surname,
-            student_name = student_name,
+            student_id = student_id,
             group = group,
             teacher_surname = teacher_surname,
             teacher_name = teacher_name,

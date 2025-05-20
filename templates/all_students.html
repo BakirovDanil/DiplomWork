@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Все студенты</title>
+</head>
+<body>
+<h1>Список студентов</h1>
+<div>
+  {% for student in students %}
+  <div>
+    <h2> № зачетной книжки: {{student.number_gradebook}} </h2>
+    <p>Фамилия {{student.name}}</p>
+    <p>Возраст {{student.age}}</p>
+    <p>Кафедра {{student.department_id}}</p>
+  </div>
+  {% endfor %}
+</div>
+</body>
+</html>
