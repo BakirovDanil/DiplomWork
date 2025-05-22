@@ -1,5 +1,4 @@
 from fastapi import HTTPException, APIRouter, Request
-from httpx import request
 
 from models.TaskModel import Task
 from models.CharacterModels import StudentBase, Student
@@ -12,6 +11,11 @@ templates = Jinja2Templates(directory = "templates")
 
 @GetRouter.get("/get_all_task")
 async def get_all_result(session: SessionDep):
+    """
+    Функция, которая возвращает всех студентов из базы данных
+    :param session:
+    :return:
+    """
     result = session.exec(select(Task)).all()
     return result
 
@@ -53,6 +57,11 @@ async def get_all_student(session: SessionDep,
 
 @GetRouter.get("/add_student")
 async def add_student_form(request: Request):
+    """
+    Функция, которая возвращает форму для добавления студента
+    :param request:
+    :return:
+    """
     return templates.TemplateResponse(
         "add_student.html",
         context = {"request": request}

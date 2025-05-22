@@ -14,6 +14,11 @@ PostRouter = APIRouter()
 templates = Jinja2Templates(directory = "templates")
 
 def open_base_rules(file: str) -> dict:
+    """
+    Функция для открытия файла с правилами
+    :param file:
+    :return:
+    """
     with open(file, 'r', encoding='utf-8') as file:
         data = json.load(file)
         base_rules = data["base_rules"]
@@ -26,6 +31,16 @@ async def add_student(number_gradebook: Annotated[str, Form(pattern = r"^\d{8}$"
                       department_id: Annotated[int, Form()],
                       session: SessionDep,
                       request: Request):
+    """
+    Функция, которая добавляет нового студента в базу данных
+    :param number_gradebook:
+    :param name:
+    :param age:
+    :param department_id:
+    :param session:
+    :param request:
+    :return:
+    """
     try:
         department = session.get(Department, department_id)
         check_number_gradebook = session.get(Student, number_gradebook)
@@ -65,6 +80,13 @@ async def add_student(number_gradebook: Annotated[str, Form(pattern = r"^\d{8}$"
 async def add_department(name: Annotated[str, Form()],
                          faculty: Annotated[str, Form()],
                          session: SessionDep):
+    """
+    Функция, которая добавляет новую кафедру в базу данных
+    :param name:
+    :param faculty:
+    :param session:
+    :return:
+    """
     try:
         department = DepartmentBase(
             name = name,
