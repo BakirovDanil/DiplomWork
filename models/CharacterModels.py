@@ -7,6 +7,8 @@ class DepartmentBase(SQLModel):
     code_department: str = Field()
     name: str = Field(index = True)
     faculty: str = Field()
+    phone_number: str = Field()
+    mail: str = Field()
 
 class Department(DepartmentBase, table = True):
     code_department: str = Field(index = True, primary_key=True)
@@ -21,7 +23,7 @@ class SpecializationBase(SQLModel):
     profile: str = Field()
     form_of_education: str = Field()
     level_of_education: str = Field()
-    department_id: str = Field(default = None, foreign_key = "department.id")
+    department_id: str = Field(default = None, foreign_key = "department.code_department")
 
 class Specialization(SpecializationBase, table = True):
     code_specialization: str = Field(index = True, primary_key = True)
@@ -31,10 +33,13 @@ class Specialization(SpecializationBase, table = True):
 Классы студента
 """
 class StudentBase(SQLModel):
-    number_gradebook: str = Field()
-    name: str = Field(index = True)
-    age: int | None = Field(default = None, index = True)
-    department_id: int = Field(default = None, foreign_key = "department.id")
+    number_gradebook: str = Field(index = True)
+    surname: str = Field()
+    name: str = Field()
+    patronymic: str|None = Field()
+    group_number: str = Field()
+    #department_id: int = Field(default = None, foreign_key = "department.code_department")
+    code_specialization: str = Field(default = None, foreign_key = "specialization.code_specialization")
 
 class Student(StudentBase, table = True):
     number_gradebook: str = Field(index = True, primary_key = True)
@@ -44,12 +49,13 @@ class Student(StudentBase, table = True):
 Классы руководителя
 """
 class DirectorBase(SQLModel):
+    id: str = Field(index = True)
     surname: str = Field(index = True)
     name: str = Field()
     patronymic: str = Field()
     academic_title: str = Field()
     post: str = Field()
-    department_id: int = Field(default = None, foreign_key = "department.id")
+    department_id: int = Field(default = None, foreign_key = "department.code_department")
 
 class Director(DirectorBase, table = True):
     id: int = Field(index = True, primary_key = True)
