@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Все руководители</title>
+</head>
+<body>
+<h1>Список руководителей</h1>
+<div>
+  {% for director in directors %}
+  <div>
+    <h2> ID руководителя: {{director.id}} </h2>
+    <p>Фамилия: {{director.surname}}</p>
+    <p>Имя: {{director.name}}</p>
+    <p>Отчество: {{director.patronymic}}</p>
+    <p>Ученое звание: {{director.academic_title}}</p>
+    <p>Должность: {{director.post}}</p>
+    <p>Кафедра: {{director.code_department}}</p>
+  </div>
+  {% endfor %}
+</div>
+</body>
+</html>

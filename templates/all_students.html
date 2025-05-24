@@ -10,9 +10,12 @@
   {% for student in students %}
   <div>
     <h2> № зачетной книжки: {{student.number_gradebook}} </h2>
-    <p>Фамилия {{student.name}}</p>
-    <p>Возраст {{student.age}}</p>
-    <p>Кафедра {{student.department_id}}</p>
+    <p>Фамилия: {{student.surname}}</p>
+    <p>Имя: {{student.name}}</p>
+    <p>Отчество: {{student.patronymic}}</p>
+    <p>Номер группы: {{student.group_number}}</p>
+    <p>Кафедра: {{student.code_department}}</p>
+    <p>Специальность: {{student.code_specialization}}</p>
   </div>
   {% endfor %}
 </div>

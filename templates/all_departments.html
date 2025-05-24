@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Все кафедры</title>
+</head>
+<body>
+<h1>Список кафедр</h1>
+<div>
+  {% for department in departments %}
+  <div>
+    <h2> Код кафедры: {{department.code_department}} </h2>
+    <h3>Название: {{department.name}}</h3>
+    <p>Факультет: (институт) {{department.faculty}}</p>
+    <p>Телефон кафедры: {{department.phone_number}}</p>
+    <p>Почта: {{department.mail}}</p>
+  </div>
+  {% endfor %}
+</div>
+</body>
+</html>
