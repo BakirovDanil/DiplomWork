@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление кафедры</title>
+</head>
+<body>
+    <h1>Добавить кафедру</h1>
+
+    {% if error_message %}
+        <div style="color: red">{{ error_message }}</div>
+    {% endif %}
+
+    {% if success_message %}
+        <div style="color: green">{{ success_message }}</div>
+    {% endif %}
+
+    <form method="post">
+        <input type="text" name="code_department" placeholder="Код кафедры" required>
+        <input type="text" name="name" placeholder="Название" required>
+        <input type="text" name="faculty" placeholder="Факультет (институт)" required>
+        <input type="text" name="phone_number" placeholder="Телефон кафедры" required>
+        <input type="text" name="mail" placeholder="Почта" required>
+        <button type="submit">Добавить</button>
+    </form>
+</body>
+</html>

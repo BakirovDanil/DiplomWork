@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Все специальности</title>
+</head>
+<body>
+<h1>Список специальностей</h1>
+<div>
+  {% for specialization in specializations %}
+  <div>
+    <h2> Код специальности: {{specialization.code_specialization}} </h2>
+    <h3>Название: {{specialization.name}}</h3>
+    <p>Профиль: {{specialization.profile}}</p>
+    <p>Форма образования: {{specialization.form_of_education}}</p>
+    <p>Уровень образования: {{specialization.level_of_education}}</p>
+    <p>Код кафедры: {{specialization.code_department}}</p>
+  </div>
+  {% endfor %}
+</div>
+</body>
+</html>

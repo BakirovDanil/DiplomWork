@@ -16,10 +16,13 @@
     {% endif %}
 
     <form method="post">
-        <input type="text" name="number_gradebook" placeholder="№ зачетной книжки" required>
+        <input type="text" name="id" placeholder="ID руководителя" required>
+        <input type="text" name="surname" placeholder="Фамилия" required>
         <input type="text" name="name" placeholder="Имя" required>
-        <input type="number" name="age" placeholder="Возраст" required>
-        <input type="number" name="department_id" placeholder="ID отдела" required>
+        <input type="text" name="patronymic" placeholder="Отчество" required>
+        <input type="text" name="academic_title" placeholder="Ученое звание" required>
+        <input type="text" name="post" placeholder="Должность" required>
+        <input type="text" name="code_department" placeholder="Код кафедры" required>
         <button type="submit">Добавить</button>
     </form>
 </body>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление специальности</title>
+</head>
+<body>
+    <h1>Добавить специальность</h1>
+
+    {% if error_message %}
+        <div style="color: red">{{ error_message }}</div>
+    {% endif %}
+
+    {% if success_message %}
+        <div style="color: green">{{ success_message }}</div>
+    {% endif %}
+
+    <form method="post">
+        <input type="text" name="code_specialization" placeholder="Код специальности" required>
+        <input type="text" name="name" placeholder="Название" required>
+        <input type="text" name="profile" placeholder="Профиль" required>
+        <input type="text" name="form_of_education" placeholder="Форма обучения" required>
+        <input type="text" name="level_of_education" placeholder="Уровень образования" required>
+        <input type="text" name="code_department" placeholder="Код кафедры" required>
+        <button type="submit">Добавить</button>
+    </form>
+</body>
+</html>

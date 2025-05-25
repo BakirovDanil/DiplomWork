@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление студента</title>
+</head>
+<body>
+    <h1>Добавить студента</h1>
+
+    {% if error_message %}
+        <div style="color: red">{{ error_message }}</div>
+    {% endif %}
+
+    {% if success_message %}
+        <div style="color: green">{{ success_message }}</div>
+    {% endif %}
+
+    <form method="post">
+        <input type="text" name="number_gradebook" placeholder="№ зачетной книжки" required>
+        <input type="text" name="surname" placeholder="Фамилия" required>
+        <input type="text" name="name" placeholder="Имя" required>
+        <input type="text" name="patronymic" placeholder="Отчество" required>
+        <input type="text" name="group_number" placeholder="Номер группы" required>
+        <input type="text" name="code_department" placeholder="Код кафедры" required>
+        <input type="text" name="code_specialization" placeholder="Код специальности" required>
+        <button type="submit">Добавить</button>
+    </form>
+</body>
+</html>

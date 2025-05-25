@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Результаты поиска студентов</title>
+</head>
+<body>
+    <h1>Результаты поиска студентов</h1>
+
+    {% if students and students | length > 0 %}
+        <ul>
+            {% for student in students %}
+                <li>
+                    <h2> № зачетной книжки: {{student.number_gradebook}} </h2>
+                    <p>Фамилия: {{student.surname}}</p>
+                    <p>Имя: {{student.name}}</p>
+                    <p>Отчество: {{student.patronymic}}</p>
+                    <p>Номер группы: {{student.group_number}}</p>
+                    <p>Специальность: {{student.code_specialization}}</p>
+                    <p>Код кафедры: {{student.code_department}}</p>
+                </li>
+                <hr />
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Студенты не найдены.</p>
+    {% endif %}
+
+    <a href="/search_student_form">Вернуться к форме поиска</a>
+</body>
+</html>
