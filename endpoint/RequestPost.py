@@ -5,7 +5,7 @@ import json
 from fastapi.templating import Jinja2Templates
 
 from methods.CheckingCodes import search_chapter_codes, search_picture_codes
-from models.CharacterModels import StudentBase, Student,Department, DepartmentBase
+from models.CharacterModels import StudentBase, Student, Department, DepartmentBase, Specialization, SpecializationBase, Director, DirectorBase
 from models.TaskModel import Task, TaskBase
 from typing import Annotated
 from database.ConnectionDB import SessionDep
@@ -26,33 +26,45 @@ def open_base_rules(file: str) -> dict:
 
 @PostRouter.post("/add_student")
 async def add_student(number_gradebook: Annotated[str, Form(pattern = r"^\d{8}$")],
+                      surname: Annotated[str, Form()],
                       name: Annotated[str, Form()],
-                      age: Annotated[int, Form()],
-                      department_id: Annotated[int, Form()],
+                      patronymic: Annotated[str, Form()],
+                      group_number: Annotated[str, Form()],
+                      code_specialization: Annotated[str, Form()],
+                      code_department: Annotated[str, Form()],
                       session: SessionDep,
                       request: Request):
     """
     Функция, которая добавляет нового студента в базу данных
+    :param code_department:
+    :param code_specialization:
+    :param group_number:
+    :param patronymic:
+    :param surname:
     :param number_gradebook:
     :param name:
-    :param age:
-    :param department_id:
     :param session:
     :param request:
     :return:
     """
     try:
-        department = session.get(Department, department_id)
+        check_code_department = session.get(Department, code_department)
+        check_code_specialization = session.get(Specialization, code_specialization)
         check_number_gradebook = session.get(Student, number_gradebook)
-        if not department:
-            raise HTTPException(status_code = 404, detail = "Отдел с таким id не найден")
+        if not check_code_department:
+            raise HTTPException(status_code = 404, detail = "Кафедра с таким кодом не найдена")
+        if not check_code_specialization:
+            raise HTTPException(status_code = 404, detail = "Специальность с таким кодом не найдена")
         if check_number_gradebook:
             raise HTTPException(status_code = 404, detail = "Студент с такой зачеткой есть в базе")
         student = StudentBase(
             number_gradebook = number_gradebook,
+            surname = surname,
             name = name,
-            age = age,
-            department_id = department_id
+            patronymic = patronymic,
+            group_number = group_number,
+            code_specialization = code_specialization,
+            code_department = code_department
         )
         student = Student.model_validate(student)
         session.add(student)
@@ -77,28 +89,169 @@ async def add_student(number_gradebook: Annotated[str, Form(pattern = r"^\d{8}$"
         )
 
 @PostRouter.post("/add_department")
-async def add_department(name: Annotated[str, Form()],
+async def add_department(code_department: Annotated[str, Form()],
+                         name: Annotated[str, Form()],
                          faculty: Annotated[str, Form()],
-                         session: SessionDep):
+                         phone_number: Annotated[str, Form()],
+                         mail: Annotated[str, Form()],
+                         session: SessionDep,
+                         request: Request):
     """
     Функция, которая добавляет новую кафедру в базу данных
+    :param request:
+    :param mail:
+    :param phone_number:
+    :param code_department:
     :param name:
     :param faculty:
     :param session:
     :return:
     """
     try:
+        check_code_department = session.get(Department, code_department)
+        if check_code_department:
+            raise HTTPException(status_code=404, detail="Кафедра с таким кодом уже есть")
         department = DepartmentBase(
+            code_department = code_department,
             name = name,
-            faculty = faculty
+            faculty = faculty,
+            phone_number = phone_number,
+            mail = mail
         )
         department = Department.model_validate(department)
         session.add(department)
         session.commit()
         session.refresh(department)
-        return {"ok": "Запись добавлена"}
+        return templates.TemplateResponse(
+            "add_department.html",
+            {
+                "request": request,
+                "success_message": "Кафедра была добавлена",
+                "department": department
+            }
+        )
     except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+        return templates.TemplateResponse(
+            "add_department.html",
+            {
+                "request": request,
+                "error_message": f"Ошибка: {str(e)}"
+            },
+            status_code=500
+        )
+
+@PostRouter.post("/add_specialization")
+async def add_specialization(code_specialization: Annotated[str, Form()],
+                             name: Annotated[str, Form()],
+                             profile: Annotated[str, Form()],
+                             form_of_education: Annotated[str, Form()],
+                             level_of_education: Annotated[str, Form()],
+                             code_department: Annotated[str, Form()],
+                             session: SessionDep,
+                             request: Request):
+    """
+    Функция, которая добавляет специальность в базу данных
+    :param code_specialization:
+    :param name:
+    :param profile:
+    :param form_of_education:
+    :param level_of_education:
+    :param code_department:
+    :param session:
+    :param request:
+    :return:
+    """
+    try:
+        check_code_specialization = session.get(Specialization, code_specialization)
+        if check_code_specialization:
+            raise HTTPException(status_code=404, detail="Специальность с таким кодом уже есть")
+        specialization = SpecializationBase(
+            code_specialization = code_specialization,
+            name = name,
+            profile = profile,
+            form_of_education = form_of_education,
+            level_of_education = level_of_education,
+            code_department = code_department
+        )
+        specialization = Specialization.model_validate(specialization)
+        session.add(specialization)
+        session.commit()
+        session.refresh(specialization)
+        return templates.TemplateResponse(
+            "add_specialization.html",
+            {
+                "request": request,
+                "success_message": "Кафедра была добавлена",
+                "specialization": specialization
+            }
+        )
+    except Exception as e:
+        return templates.TemplateResponse(
+            "add_specialization.html",
+            {
+                "request": request,
+                "error_message": f"Ошибка: {str(e)}"
+            },
+            status_code=500
+        )
+
+@PostRouter.post("/add_director")
+async def add_director(id: Annotated[str, Form(pattern = r"^\d{6}$")],
+                      surname: Annotated[str, Form()],
+                      name: Annotated[str, Form()],
+                      patronymic: Annotated[str, Form()],
+                      academic_title: Annotated[str, Form()],
+                      post: Annotated[str, Form()],
+                      code_department: Annotated[str, Form()],
+                      session: SessionDep,
+                      request: Request):
+    """
+    Функция, которая добавляет нового студента в базу данных
+    :param post:
+    :param academic_title:
+    :param id:
+    :param code_department:
+    :param patronymic:
+    :param surname:
+    :param name:
+    :param session:
+    :param request:
+    :return:
+    """
+    try:
+        check_id_director = session.get(Director, id)
+        if check_id_director:
+            raise HTTPException(status_code=404, detail="Руководитель с таким ID уже есть")
+        director = DirectorBase(
+            id = id,
+            surname = surname,
+            name=name,
+            patronymic = patronymic,
+            academic_title = academic_title,
+            post = post,
+            code_department=code_department
+        )
+        director = Director.model_validate(director)
+        session.add(director)
+        session.commit()
+        session.refresh(director)
+        return templates.TemplateResponse(
+            "add_director.html",
+            {
+                "request": request,
+                "success_message": "Руководитель был добавлен",
+                "director": director
+            }
+        )
+    except Exception as e:
+        return templates.TemplateResponse(
+            "add_director.html",
+            {
+                "request": request,
+                "error_message": f"Ошибка: {str(e)}"
+            },
+            status_code=500
+        )
 
 @PostRouter.post("/check_document")
 async def check_document(student_id: Annotated[int, Form()],
