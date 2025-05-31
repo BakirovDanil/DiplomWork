@@ -12,10 +12,9 @@ def checking_code(code: str, base_rules: dict, chapter: str) -> bool:
     :return:
     """
     decoder = wrap(code, base_rules[chapter]["Длина части кода"])
-    answer = ''
     for position in decoder:
         if position in base_rules[chapter]:
-            answer += position
+            continue
         else:
             return False
     return True
