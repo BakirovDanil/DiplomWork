@@ -1,13 +1,10 @@
 from sqlmodel import Field, SQLModel
 
 
-class TaskBase(SQLModel):
-    group: str = Field()
-    teacher_surname: str = Field()
-    teacher_name: str = Field()
+class ReportBase(SQLModel):
     result: str = Field()
-    student_number_gradebook: int = Field(default = None, foreign_key = "student.number_gradebook", primary_key = True)
+    number_gradebook: str = Field(default=None, foreign_key="student.number_gradebook")
 
 
-class Task(TaskBase, table = True):
-    id: int | None = Field(default = None, primary_key = True)
+class Report(ReportBase, table = True):
+    report_id: int = Field(default = None, primary_key = True)

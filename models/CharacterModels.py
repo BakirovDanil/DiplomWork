@@ -23,7 +23,6 @@ class SpecializationBase(SQLModel):
     profile: str = Field()
     form_of_education: str = Field()
     level_of_education: str = Field()
-    code_department: str = Field(default = None, foreign_key = "department.code_department")
 
 class Specialization(SpecializationBase, table = True):
     code_specialization: str = Field(index = True, primary_key = True)
@@ -38,7 +37,7 @@ class StudentBase(SQLModel):
     name: str = Field()
     patronymic: str|None = Field()
     group_number: str = Field()
-    code_department: int = Field(default = None, foreign_key = "department.code_department")
+    code_department: str = Field(default = None, foreign_key = "department.code_department")
     code_specialization: str = Field(default = None, foreign_key = "specialization.code_specialization")
 
 class Student(StudentBase, table = True):
@@ -55,9 +54,10 @@ class DirectorBase(SQLModel):
     patronymic: str = Field()
     academic_title: str = Field()
     post: str = Field()
-    code_department: int = Field(default = None, foreign_key = "department.code_department")
+    code_department: str = Field(default = None, foreign_key = "department.code_department")
+    password: str = Field()
 
 class Director(DirectorBase, table = True):
-    id: int = Field(index = True, primary_key = True)
+    id: str = Field(index = True, primary_key = True)
 
 
