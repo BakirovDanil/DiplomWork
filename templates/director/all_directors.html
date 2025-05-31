@@ -3,13 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <title>Все руководители</title>
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #4a90e2;
+            margin-top: 40px;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        .directors-list {
+            max-width: 900px;
+            margin: 0 auto 40px auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+        }
+        .director-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+            padding: 24px 32px;
+            width: 320px;
+            margin-bottom: 10px;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .director-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+        }
+        .director-card h2 {
+            font-size: 20px;
+            color: #357ab8;
+            margin-top: 0;
+            margin-bottom: 14px;
+        }
+        .director-card p {
+            margin: 4px 0;
+            color: #444;
+            font-size: 16px;
+        }
+        .back-link-container {
+            max-width: 900px;
+            margin: 0 auto 40px auto;
+            text-align: center;
+        }
+        .back-link-container a {
+            display: inline-block;
+            background-color: #4a90e2;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .back-link-container a:hover {
+            background-color: #357abd;
+        }
+    </style>
 </head>
 <body>
 <h1>Список руководителей</h1>
-<div>
+<div class="directors-list">
   {% for director in directors %}
-  <div>
-    <h2> ID руководителя: {{director.id}} </h2>
+  <div class="director-card">
+    <h2>ID руководителя: {{director.id}}</h2>
     <p>Фамилия: {{director.surname}}</p>
     <p>Имя: {{director.name}}</p>
     <p>Отчество: {{director.patronymic}}</p>
@@ -19,5 +85,10 @@
   </div>
   {% endfor %}
 </div>
+
+<div class="back-link-container">
+  <a href="/">Вернуться на начальную страницу</a>
+</div>
+
 </body>
 </html>

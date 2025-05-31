@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Результаты поиска студентов по фамилии и имени</title>
+    <style>
+        body {
+            background-color: #f7f9fc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #3a6ea5;
+            margin-bottom: 40px;
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: 0.05em;
+        }
+        ul {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0;
+            list-style: none;
+        }
+        li {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            padding: 24px 32px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+        li:hover {
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        h2 {
+            margin-top: 0;
+            color: #2c5d9f;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        p {
+            margin: 6px 0;
+            font-size: 16px;
+            color: #555;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e0e0e0;
+            margin: 20px 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        p.no-results {
+            text-align: center;
+            color: #e74c3c;
+            font-weight: 600;
+            font-size: 18px;
+            margin-top: 40px;
+        }
+        .back-link {
+            display: block;
+            max-width: 900px;
+            margin: 40px auto 0;
+            text-align: center;
+            background-color: #4a90e2;
+            color: white;
+            text-decoration: none;
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .back-link:hover {
+            background-color: #357abd;
+        }
+        @media (max-width: 700px) {
+            ul {
+                padding: 0 10px;
+            }
+            li {
+                padding: 20px 20px;
+            }
+            .back-link {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Результаты поиска студентов по фамилии и имени</h1>
+
+    {% if students | length > 0 %}
+        <ul>
+            {% for student in students %}
+                <li>
+                    <h2>№ зачетной книжки: {{student.number_gradebook}}</h2>
+                    <p>Фамилия: {{student.surname}}</p>
+                    <p>Имя: {{student.name}}</p>
+                    <p>Отчество: {{student.patronymic}}</p>
+                    <p>Номер группы: {{student.group_number}}</p>
+                    <p>Специальность: {{student.code_specialization}}</p>
+                    <p>Код кафедры: {{student.code_department}}</p>
+                </li>
+                {% if not loop.last %}
+                    <hr />
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-results">Студенты не найдены.</p>
+    {% endif %}
+
+    <a href="/search_student_form_by_surname_and_name" class="back-link">Вернуться к форме поиска</a>
+</body>
+</html>

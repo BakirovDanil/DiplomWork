@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Результаты поиска руководителей</title>
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        ul {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0;
+            list-style: none;
+        }
+        li {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s ease;
+        }
+        li:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        h2 {
+            margin-top: 0;
+            color: #357ab8;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        p {
+            margin: 6px 0;
+            font-size: 16px;
+            color: #444;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e0e0e0;
+            margin: 20px 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        p:not(:last-child) {
+            margin-bottom: 8px;
+        }
+        p.no-results {
+            text-align: center;
+            color: #e74c3c;
+            font-weight: 600;
+            font-size: 18px;
+            margin-top: 40px;
+        }
+        .links {
+            max-width: 800px;
+            margin: 40px auto 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        a {
+            background-color: #4a90e2;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+        a:hover {
+            background-color: #357abd;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+            ul {
+                max-width: 100%;
+            }
+            li {
+                padding: 15px 20px;
+            }
+            .links {
+                flex-direction: column;
+                gap: 12px;
+            }
+            a {
+                text-align: center;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Результаты поиска руководителей</h1>
+
+    {% if directors | length > 0 %}
+        <ul>
+            {% for director in directors %}
+                <li>
+                    <h2>ID руководителя: {{ director.id }}</h2>
+                    <p>Фамилия: {{ director.surname }}</p>
+                    <p>Имя: {{ director.name }}</p>
+                    <p>Отчество: {{ director.patronymic }}</p>
+                    <p>Ученое звание: {{ director.academic_title }}</p>
+                    <p>Должность: {{ director.post }}</p>
+                    <p>Код кафедры: {{ director.code_department }}</p>
+                </li>
+                {% if not loop.last %}
+                    <hr />
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-results">Руководители не найдены.</p>
+    {% endif %}
+
+    <div class="links">
+        <a href="/search_director_form_by_surname_and_name">Вернуться к форме поиска</a>
+        <a href="/">Вернуться на начальную страницу</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Результаты проверки документа</title>
+    <style>
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        .section { margin-bottom: 30px; border: 1px solid #ddd; padding: 15px; }
+        h2 { color: #2c3e50; border-bottom: 2px solid #3498db; }
+        .stats { margin: 10px 0; }
+        .violations { margin-top: 15px; }
+        .violation-item { padding: 5px; background: #f8f9fa; margin: 5px 0; }
+        .error { color: red; font-weight: bold; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Результаты проверки документа</h1>
+
+        {% if error %}
+            <div class="error">Ошибка: {{ error }}</div>
+        {% elif result %}
+            <!-- Секция для заголовков -->
+            <div class="section">
+                <h2>Проверка разделов</h2>
+                <div class="stats">
+                    <p>Всего заголовков: {{ result["Отчет по разделам"]["Общее количество заголовков"] }}</p>
+                    <p>Верно закодировано: {{ result["Отчет по разделам"]["Количество верно закодированных абзацев"] }}</p>
+                    <p>Незакодировано: {{ result["Отчет по разделам"]["Количество незакодированных абзацев"] }}</p>
+                </div>
+
+                {% if result["Отчет по разделам"]["Заголовки с нарушениями кодирования"] %}
+                <div class="violations">
+                    <h3>Нарушения в заголовках:</h3>
+                    {% for number_paragraph, violation_info in result["Отчет по разделам"]["Заголовки с нарушениями кодирования"].items() %}
+                        <div class="violation-item">
+                            <p><strong>Номер заголовка:</strong> {{ violation_info["Номер заголовка"] }}</p>
+                            <p><strong>Название заголовка:</strong> {{ violation_info["Название заголовка"] }}</p>
+                            <p><strong>Ошибка:</strong> {{ violation_info["Ошибка"] }}</p>
+                            <p><strong>Заключение:</strong> {{ violation_info["Заключение"] }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Секция для рисунков -->
+            <div class="section">
+                <h2>Проверка рисунков</h2>
+                <div class="stats">
+                    <p>Всего рисунков: {{ result["Отчет по рисункам"]["Общее количество рисунков"] }}</p>
+                    <p>Верно закодировано: {{ result["Отчет по рисункам"]["Количество верно закодированных рисунков"] }}</p>
+                    <p>Незакодировано: {{ result["Отчет по рисункам"]["Количество незакодированных рисунков"] }}</p>
+                </div>
+
+                {% if result["Отчет по рисункам"]["Рисунки с нарушением кодирования"] %}
+                <div class="violations">
+                    <h3>Нарушения в рисунках:</h3>
+                    {% for picture_number, violation_info in result["Отчет по рисункам"]["Рисунки с нарушением кодирования"].items() %}
+                        <div class="violation-item">
+                            <p><strong>Номер рисунка:</strong> {{ violation_info["Номер рисунка"] }}</p>
+                            <p><strong>Название рисунка:</strong> {{ violation_info["Название рисунка"] }}</p>
+                            <p><strong>Ошибка:</strong> {{ violation_info["Ошибка"] }}</p>
+                            <p><strong>Заключение:</strong> {{ violation_info["Заключение"] }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>Данные отсутствуют для отображения.</p>
+        {% endif %}
+
+        <a href="/check_document_form">Проверить новый документ</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Результат поиска студента по номеру зачетной книжки</title>
+    <style>
+        body {
+            background-color: #f9fafb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 24px;
+            letter-spacing: 0.03em;
+        }
+        p {
+            font-size: 16px;
+            margin: 12px 0;
+            line-height: 1.5;
+        }
+        strong {
+            color: #34495e;
+        }
+        .not-found {
+            text-align: center;
+            color: #e74c3c;
+            font-weight: 600;
+            font-size: 18px;
+            margin: 40px 0;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            padding: 12px 0;
+            background-color: #4a90e2;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        a:hover {
+            background-color: #357abd;
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 10px;
+            }
+            .container {
+                padding: 25px 20px;
+                width: 100%;
+            }
+            h1 {
+                font-size: 20px;
+            }
+            a {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Результат поиска студента по номеру зачетной книжки</h1>
+
+        {% if student %}
+            <p><strong>Номер зачетной книжки:</strong> {{ student.number_gradebook }}</p>
+            <p><strong>Фамилия:</strong> {{ student.surname }}</p>
+            <p><strong>Имя:</strong> {{ student.name }}</p>
+            <p><strong>Отчество:</strong> {{ student.patronymic }}</p>
+            <p><strong>Номер группы:</strong> {{ student.group_number }}</p>
+            <p><strong>Специальность:</strong> {{ student.code_specialization }}</p>
+            <p><strong>Кафедра:</strong> {{ student.code_department }}</p>
+        {% else %}
+            <p class="not-found">Студент с таким номером зачетной книжки не найден.</p>
+        {% endif %}
+
+        <a href="/search_student_form_by_number_gradebook">Вернуться к поиску</a>
+    </div>
+</body>
+</html>

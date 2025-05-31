@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Добавление студента</title>
+    <title>Проверка документа</title>
     <style>
         body {
             background-color: #f0f4f8;
@@ -20,7 +20,7 @@
             padding: 40px 50px;
             border-radius: 14px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-            max-width: 450px;
+            max-width: 500px;
             width: 100%;
         }
         h1 {
@@ -31,50 +31,41 @@
             font-size: 26px;
             letter-spacing: 0.03em;
         }
-        .message {
+        label {
+            display: block;
             font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #4a90e2;
+        }
+        input[type="text"],
+        input[type="file"] {
+            width: 100%;
             padding: 12px 15px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .error {
-            background-color: #ffeaea;
-            color: #e74c3c;
-            border: 1px solid #e74c3c;
-        }
-        .success {
-            background-color: #e6f4ea;
-            color: #27ae60;
-            border: 1px solid #27ae60;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-        input[type="text"] {
-            padding: 12px 16px;
             font-size: 16px;
             border: 1.8px solid #cbd6e2;
             border-radius: 10px;
             transition: border-color 0.3s ease;
             box-sizing: border-box;
         }
-        input[type="text"]:focus {
+        input[type="text"]:focus,
+        input[type="file"]:focus {
             outline: none;
             border-color: #4a90e2;
             box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
         }
+        form > *:not(button) {
+            margin-bottom: 20px;
+        }
         button {
+            width: 100%;
             padding: 14px 0;
             background-color: #4a90e2;
             color: white;
             font-size: 18px;
             font-weight: 700;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -99,25 +90,15 @@
 </head>
 <body>
     <div class="container">
-        <h1>Добавить студента</h1>
+        <h1>Проверка документа студента</h1>
+        <form action="/check_document" method="post" enctype="multipart/form-data">
+            <label for="number_gradebook">№ зачетной книжки студента:</label>
+            <input type="text" id="number_gradebook" name="number_gradebook" required>
 
-        {% if error_message %}
-            <div class="message error">{{ error_message }}</div>
-        {% endif %}
+            <label for="file">Документ (.docx):</label>
+            <input type="file" id="file" name="file" accept=".docx" required>
 
-        {% if success_message %}
-            <div class="message success">{{ success_message }}</div>
-        {% endif %}
-
-        <form method="post">
-            <input type="text" name="number_gradebook" placeholder="№ зачетной книжки" required>
-            <input type="text" name="surname" placeholder="Фамилия" required>
-            <input type="text" name="name" placeholder="Имя" required>
-            <input type="text" name="patronymic" placeholder="Отчество" required>
-            <input type="text" name="group_number" placeholder="Номер группы" required>
-            <input type="text" name="code_department" placeholder="Код кафедры" required>
-            <input type="text" name="code_specialization" placeholder="Код специальности" required>
-            <button type="submit">Добавить</button>
+            <button type="submit">Проверить</button>
         </form>
     </div>
 </body>

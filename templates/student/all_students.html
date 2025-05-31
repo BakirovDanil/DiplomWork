@@ -3,21 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Все студенты</title>
+    <style>
+        body {
+            background-color: #f7f9fc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #3a6ea5;
+            margin-bottom: 40px;
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: 0.05em;
+        }
+        .students-list {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+        }
+        .student-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            padding: 24px 32px;
+            width: 320px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .student-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        .student-card h2 {
+            margin-top: 0;
+            color: #2c5d9f;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        .student-card p {
+            margin: 6px 0;
+            font-size: 16px;
+            color: #555;
+        }
+        @media (max-width: 700px) {
+            .students-list {
+                justify-content: center;
+            }
+            .student-card {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>Список студентов</h1>
-<div>
-  {% for student in students %}
-  <div>
-    <h2> № зачетной книжки: {{student.number_gradebook}} </h2>
-    <p>Фамилия: {{student.surname}}</p>
-    <p>Имя: {{student.name}}</p>
-    <p>Отчество: {{student.patronymic}}</p>
-    <p>Номер группы: {{student.group_number}}</p>
-    <p>Кафедра: {{student.code_department}}</p>
-    <p>Специальность: {{student.code_specialization}}</p>
-  </div>
-  {% endfor %}
-</div>
+    <h1>Список студентов</h1>
+    <div class="students-list">
+      {% for student in students %}
+      <div class="student-card">
+        <h2>№ зачетной книжки: {{student.number_gradebook}}</h2>
+        <p>Фамилия: {{student.surname}}</p>
+        <p>Имя: {{student.name}}</p>
+        <p>Отчество: {{student.patronymic}}</p>
+        <p>Номер группы: {{student.group_number}}</p>
+        <p>Кафедра: {{student.code_department}}</p>
+        <p>Специальность: {{student.code_specialization}}</p>
+      </div>
+      {% endfor %}
+    </div>
 </body>
 </html>

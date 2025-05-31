@@ -3,21 +3,85 @@
 <head>
     <meta charset="UTF-8" />
     <title>Главная страница</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #4a90e2;
+            color: #fff;
+            padding: 24px 0;
+            margin: 0 0 30px 0;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        nav {
+            background: #fff;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 32px 36px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+        nav h3 {
+            color: #4a90e2;
+            margin-top: 24px;
+            margin-bottom: 10px;
+        }
+        ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+        li {
+            margin-bottom: 7px;
+        }
+        a {
+            color: #222;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #4a90e2;
+            text-decoration: underline;
+        }
+        p {
+            text-align: center;
+            color: #555;
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body>
     <h1>Добро пожаловать на сайт</h1>
 
     <nav>
+        <h3>Ссылка для проверки документа</h3>
         <ul>
-            <li><a href="/search_student_form">Поиск студентов</a></li>
-            <li><a href="/get_all_student">Список всех студентов</a></li>
-            <li><a href="/search_director_form">Поиск руководителей</a></li>
-            <li><a href="/get_all_director">Список всех руководителей</a></li>
-            <li><a href="/get_all_department">Список кафедр</a></li>
-            <!-- Добавьте другие ссылки по необходимости -->
+            <li><a href="/check_document_form">Проверка документа</a></li>
         </ul>
+        <h3>Ссылки для работы со списком студентов</h3>
+        <ul>
+            <li><a href="/search_student_form_by_surname_and_name">Поиск студентов по фамилии или имени</a></li>
+            <li><a href="/search_student_form_by_number_gradebook">Поиск студентов по номеру зачетки</a></li>
+            <li><a href="/get_all_student">Список всех студентов</a></li>
+            <li><a href="/add_student">Добавить студента</a></li>
+        </ul>
+        <h3>Ссылки для работы со списком руководителей</h3>
+        <ul>
+            <li><a href="/search_director_form_by_surname_and_name">Поиск руководителей по фамилии или имени</a></li>
+            <li><a href="/search_director_form_by_id">Поиск руководителей по личному номеру</a></li>
+            <li><a href="/get_all_director">Список всех руководителей</a></li>
+            <li><a href="/add_director">Добавить руководителя</a></li>
+        </ul>
+        <h3>Ссылки для работы со списком кафедр</h3>
+        <ul>
+            <li><a href="/get_all_department">Список кафедр</a></li>
+        </ul>
+        <h3>Ссылки для работы со списком специальностей</h3>
     </nav>
-
     <p>Выберите нужный раздел для работы с данными.</p>
 </body>
 </html>
