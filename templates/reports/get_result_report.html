@@ -71,6 +71,29 @@
             <p>Данные отсутствуют для отображения.</p>
         {% endif %}
 
+        <!-- Секция для отчёта по размерам -->
+<div class="section">
+    <h2>Проверка размеров</h2>
+    <div class="stats">
+        <p>Всего подразделов: {{ result["Отчет по размерам"]|length }}</p>
+    </div>
+
+    {% if result["Отчет по размерам"] %}
+        <div class="violations">
+            <h3>Длина подразделов (количество слов):</h3>
+            {% for index, subsection in result["Отчет по размерам"].items() %}
+                <div class="violation-item">
+                    <p><strong>Подраздел {{ index }}:</strong> {{ subsection["Заголовок"] }}</p>
+                    <p><strong>Количество слов:</strong> {{ subsection["Количество слов"] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Данные о подразделах отсутствуют.</p>
+    {% endif %}
+</div>
+
+
         <a href="/check_document_form">Проверить новый документ</a>
     </div>
 </body>

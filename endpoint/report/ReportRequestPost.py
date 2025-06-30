@@ -4,7 +4,7 @@ import json
 from typing import Annotated
 from fastapi.templating import Jinja2Templates
 
-from methods.CheckingCodes import search_chapter_codes, search_picture_codes
+from methods.CheckingCodes import search_chapter_codes, search_picture_codes, check_len_subsection
 from models.CharacterModels import Student
 from models.TaskModel import Report, ReportBase
 from database.ConnectionDB import SessionDep
@@ -43,9 +43,11 @@ async def check_document(number_gradebook: Annotated[str, Form()],
         document = Document(file.file)
         chapter_status = await search_chapter_codes(open_base_rules('rules/section_rules.json'),document) # проверка по содержанию
         picture_status = await search_picture_codes(open_base_rules('rules/section_rules.json'), document) # проверка по рисункам
+        subsection_status = await check_len_subsection(open_base_rules('rules/section_rules.json'), document) # проверка по размерам
         result = {
             "Отчет по разделам": chapter_status,
-            "Отчет по рисункам": picture_status
+            "Отчет по рисункам": picture_status,
+            "Отчет по размерам": subsection_status
         }
         checking_result = str(result)
         diplom_work_information = ReportBase(
